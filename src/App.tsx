@@ -1,12 +1,17 @@
-import { createSignal, type Component } from "solid-js";
+import { createSignal, type Component, Show } from "solid-js";
 import spongeCase from "./spongecase";
 
 const App: Component = () => {
+  const [text, setText] = createSignal("");
+  const [showAlert, setShowAlert] = createSignal(false);
+
   const transformAndCopy = (input: string) => {
     navigator.clipboard.writeText(spongeCase(input));
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
   };
-
-  const [text, setText] = createSignal("");
 
   return (
     <main>
@@ -47,6 +52,9 @@ const App: Component = () => {
             </button>
           </div>
         </div>
+        <Show when={showAlert()}>
+          <div class="text-center">Your text has been copied!</div>
+        </Show>
       </form>
     </main>
   );
